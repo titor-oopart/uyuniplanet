@@ -6,27 +6,30 @@ export async function GET(request, { params }) {
     'SELECT * FROM places WHERE id = $1',
     [id]
   );
-
   if (result.rows.length === 0) {
     return Response.json(
       { message: `Place not found ${id}` },
       { status: 404 }
     );
   }
-
   return Response.json(result.rows[0]);
 }
 
 export async function DELETE(request, { params }) {
   try {
-
     const { id } = await params;
     const result = await pool.query(
       `DELETE FROM places
     WHERE id = $1
     RETURNING *`, [id]
     )
-    return Response.json(result.rows[0])
+    if (result.rows.length === 0) {
+      return Response.json(
+        { message: `Element with id: ${id} does not exist.` },
+        { status: 404 }
+      );
+    }
+    return Response.json(null, { status: 204 });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
   }
@@ -44,7 +47,7 @@ export async function PUT(request, { params }) {
     for (let i = 0; i < bodyArray.length; i++) {
       let userBody = bodyArray[i]
       if (!allowedField.includes(userBody)) {
-        return Response.json({ error: "Invalid body data." }, { status: 404 })
+        return Response.json({ error: "Bad request." }, { status: 400 })
       }
     }
     const { name, description, location, image_url } = body;
