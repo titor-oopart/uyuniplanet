@@ -1,6 +1,4 @@
-import pool from '@/lib/db';
-import { Ojuju } from 'next/font/google';
-
+import { pool } from '@/lib/db';
 
 export async function GET() {
   try {

@@ -1,4 +1,5 @@
-import pool from '@/lib/db';
+import { pool } from '@/lib/db';
+import { updatePlaceService } from "@/services/place.service";
 
 export async function GET(request, { params }) {
   const { id } = await params;
@@ -39,37 +40,33 @@ export async function DELETE(request, { params }) {
 export async function PUT(request, { params }) {
   try {
     const { id } = await params;
+
     const body = await request.json();
-    const allowedField = [
-      "name", "description", "location", "image_url"
-    ]
-    const bodyArray = Object.keys(body);
-    for (let i = 0; i < bodyArray.length; i++) {
-      let userBody = bodyArray[i]
-      if (!allowedField.includes(userBody)) {
-        return Response.json({ error: "Bad request." }, { status: 400 })
-      }
+
+    const place = await updatePlaceService(id, body);
+
+    return Response.json(place);
+
+  } catch (error) {
+
+    if (error.message === "BAD_REQUEST") {
+      return Response.json(
+        { error: "Bad request." },
+        { status: 400 }
+      );
     }
-    const { name, description, location, image_url } = body;
-    const result = await pool.query(
-      `UPDATE places
-      SET name = COALESCE($1, name),
-      description = COALESCE($2, description),
-      location = COALESCE($3, location),
-      image_url = COALESCE($4, image_url)
-      WHERE id = $5
-      RETURNING *;
-      `, [name, description, location, image_url, id]
-    )
-    if (result.rows.length === 0) {
+
+    if (error.message === "NOT_FOUND") {
       return Response.json(
         { error: "Place no encontrado" },
         { status: 404 }
       );
     }
-    return Response.json(result.rows[0])
-  } catch (error) {
-    return Response.json({ error: error.message }, { status: 500 })
+
+    return Response.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
 
