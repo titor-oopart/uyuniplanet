@@ -1,4 +1,4 @@
-export function validateUpdatePlace(body) {
+export function validatePlaceFields(body) {
   const allowedFields = [
     "name",
     "description",

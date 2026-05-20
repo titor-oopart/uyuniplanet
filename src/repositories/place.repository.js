@@ -20,3 +20,21 @@ export async function updatePlace(id, data) {
   return result.rows[0];
 }
 
+
+export async function postPlace(body) {
+  const { name, description, location, image_url } = body;
+
+  const result = await pool.query(
+    `INSERT INTO places (
+      name,
+      description,
+      location,
+      image_url
+    )
+    VALUES ($1, $2, $3, $4)
+    RETURNING *;`,
+    [name, description, location, image_url]
+  );
+
+  return result.rows[0];
+}
