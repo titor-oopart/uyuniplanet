@@ -38,3 +38,13 @@ export async function postPlace(body) {
 
   return result.rows[0];
 }
+
+export async function deletePlaceById(id) {
+
+  const result = await pool.query(
+    `DELETE FROM places
+  WHERE id = $1
+  RETURNING *`, [id]
+  );
+  return result.rows[0]
+}

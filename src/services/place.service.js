@@ -1,5 +1,5 @@
-import { updatePlace, postPlace } from "@/repositories/place.repository";
-import { validatePlaceFields } from "@/validators/place.validator";
+import { updatePlace, postPlace, deletePlaceById } from "@/repositories/place.repository";
+import { validatePlaceFields, validateId } from "@/validators/place.validator";
 
 export async function updatePlaceService(id, body) {
   const isValid = validatePlaceFields(body);
@@ -23,4 +23,23 @@ export async function postPlaceService(body) {
     throw new Error("NOT_FOUND");
   }
   return place;
+}
+
+export async function removePlace(id) {
+  validateId(id);
+
+  const deletedPlace = await deletePlaceById(id);
+
+  if (!deletedPlace) {
+    return {
+      success: false,
+      status: 404,
+      message: `Element with id: ${id} does not exist.`,
+    };
+  }
+
+  return {
+    success: true,
+    status: 204,
+  };
 }
