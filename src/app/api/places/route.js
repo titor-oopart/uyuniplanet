@@ -1,18 +1,5 @@
-import { pool } from '@/lib/db';
+import { postPlaceService, fetchPlaceService } from "@/services/place.service";
 
-import { postPlaceService } from "@/services/place.service";
-
-export async function GET() {
-  try {
-    const result = await pool.query(
-      'SELECT * FROM places ORDER BY id ASC'
-    )
-    return Response.json(result.rows)
-  } catch (error) {
-    console.log(error)
-    return Response.json({ error: 'Database error' }, { status: 500 })
-  }
-}
 
 export async function POST(req) {
   try {
@@ -27,3 +14,14 @@ export async function POST(req) {
   }
 }
 
+export async function GET() {
+  try {
+    const result = await fetchPlaceService();
+    if (result.length === 0) {
+      return Response.json({ message: "Place not found." }, { status: 404 })
+    }
+    return Response.json(result)
+  } catch (error) {
+    return Response.json({ error: 'Database error' }, { status: 500 })
+  }
+}

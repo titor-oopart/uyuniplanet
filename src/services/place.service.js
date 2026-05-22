@@ -1,5 +1,10 @@
-import { updatePlace, postPlace, deletePlaceById } from "@/repositories/place.repository";
-import { validatePlaceFields, validateId } from "@/validators/place.validator";
+import {
+  updatePlace,
+  postPlace,
+  deletePlaceById,
+  fetchPlace
+} from "@/repositories/place.repository";
+import { validatePlaceFields, validateId, validatePlaceNotEmpty } from "@/validators/place.validator";
 
 export async function updatePlaceService(id, body) {
   const isValid = validatePlaceFields(body);
@@ -43,3 +48,9 @@ export async function removePlace(id) {
     status: 204,
   };
 }
+
+export async function fetchPlaceService() {
+  const result = await fetchPlace();
+  return result
+}
+

@@ -21,8 +21,8 @@ export function validateId(id) {
   if (!id) {
     throw new Error('Id is required');
   }
-
   if (isNaN(id)) {
     throw new Error('Id must be a number');
   }
 }
+

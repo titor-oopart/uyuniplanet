@@ -48,3 +48,13 @@ export async function deletePlaceById(id) {
   );
   return result.rows[0]
 }
+
+export async function fetchPlace() {
+  const result = await pool.query(
+    `select * FROM places ORDER BY id ASC`
+  )
+  return result.rows
+}
+
+
+
