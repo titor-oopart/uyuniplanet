@@ -56,5 +56,11 @@ export async function fetchPlace() {
   return result.rows
 }
 
-
+export async function fetchPlaceById(id) {
+  const result = await pool.query(
+    'SELECT * FROM places WHERE id = $1',
+    [id]
+  );
+  return result.rows[0];
+}
 
