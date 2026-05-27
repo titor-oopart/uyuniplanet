@@ -10,10 +10,9 @@ export function validatePlaceFields(body) {
 
   for (const field of bodyFields) {
     if (!allowedFields.includes(field)) {
-      return false;
+      throw new Error("BAD_REQUEST")
     }
   }
-
   return true;
 }
 
@@ -21,7 +20,7 @@ export function validateId(id) {
   if (!id) {
     throw new Error('Id is required');
   }
-  if (isNaN(id)) {
+  if (Number.isNaN(Number(id))) {
     throw new Error('Id must be a number');
   }
 }
