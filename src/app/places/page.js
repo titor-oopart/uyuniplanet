@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
-export const response = await fetch('http://localhost:3000/api/places')
-export const responseFetch = await response.json()
-const header = ["id", "name", "description", "location", "image", "date"]
+export const response = await fetch("http://localhost:3000/api/places");
+export const responseFetch = await response.json();
+const header = ["id", "name", "description", "location", "image", "date"];
 
 export default async function places(props) {
   return (
@@ -17,14 +17,14 @@ export default async function places(props) {
         </thead>
         <tbody>
           {responseFetch.map((row, idx) => (
-            <tr key={idx}>{
-              Object.entries(row).map(([key, data], value) => (
+            <tr key={idx}>
+              {Object.entries(row).map(([key, data], value) => (
                 <td key={value}>{data}</td>
-              ))
-            }</tr>
-          ))}</tbody>
+              ))}
+            </tr>
+          ))}
+        </tbody>
       </table>
     </div>
   );
-};
-
+}

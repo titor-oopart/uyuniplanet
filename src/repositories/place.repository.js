@@ -20,7 +20,6 @@ export async function updatePlace(id, data) {
   return result.rows[0];
 }
 
-
 export async function postPlace(body) {
   const { name, description, location, image_url } = body;
 
@@ -40,27 +39,21 @@ export async function postPlace(body) {
 }
 
 export async function deletePlaceById(id) {
-
   const result = await pool.query(
     `DELETE FROM places
   WHERE id = $1
-  RETURNING *`, [id]
-  );
-  return result.rows[0]
-}
-
-export async function fetchPlace() {
-  const result = await pool.query(
-    `select * FROM places ORDER BY id ASC`
-  )
-  return result.rows
-}
-
-export async function fetchPlaceById(id) {
-  const result = await pool.query(
-    'SELECT * FROM places WHERE id = $1',
+  RETURNING *`,
     [id]
   );
   return result.rows[0];
 }
 
+export async function fetchPlace() {
+  const result = await pool.query(`select * FROM places ORDER BY id ASC`);
+  return result.rows;
+}
+
+export async function fetchPlaceById(id) {
+  const result = await pool.query("SELECT * FROM places WHERE id = $1", [id]);
+  return result.rows[0];
+}

@@ -3,9 +3,13 @@ import {
   postPlace,
   deletePlaceById,
   fetchPlace,
-  fetchPlaceById
+  fetchPlaceById,
 } from "@/repositories/place.repository";
-import { validatePlaceFields, validateId, validatePlaceNotEmpty } from "@/validators/place.validator";
+import {
+  validatePlaceFields,
+  validateId,
+  validatePlaceNotEmpty,
+} from "@/validators/place.validator";
 
 export async function updatePlaceService(id, body) {
   const isValid = validatePlaceFields(body);
@@ -22,7 +26,7 @@ export async function updatePlaceService(id, body) {
 export async function postPlaceService(body) {
   const isValid = validatePlaceFields(body);
   if (!isValid) {
-    throw new Error("BAD_REQUEST")
+    throw new Error("BAD_REQUEST");
   }
   const place = await postPlace(body);
   if (!place) {
