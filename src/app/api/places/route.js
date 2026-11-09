@@ -20,6 +20,7 @@ export async function GET() {
     }
     return Response.json(result);
   } catch (error) {
+    console.error("GET /api/places error:", error);
     return Response.json({ error: "Database error" }, { status: 500 });
   }
 }
