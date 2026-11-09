@@ -1,30 +1,42 @@
-import React from "react";
+import { fetchPlaceService } from "@/services/place.service";
 
-export const response = await fetch("http://localhost:3000/api/places");
-export const responseFetch = await response.json();
-const header = ["id", "name", "description", "location", "image", "date"];
+const headers = ["ID", "Name", "Description", "Location", "Image", "Date"];
 
-export default async function places(props) {
+export default async function PlacesPage() {
+  const places = await fetchPlaceService();
+
   return (
-    <div>
-      <table>
-        <thead>
-          <tr>
-            {header.map((title, idx) => (
-              <td key={idx}>{title}</td>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {responseFetch.map((row, idx) => (
-            <tr key={idx}>
-              {Object.entries(row).map(([key, data], value) => (
-                <td key={value}>{data}</td>
+    <main>
+      <h1>Places</h1>
+
+      {places.length === 0 ? (
+        <p>No places found.</p>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              {headers.map((header) => (
+                <th key={header}>{header}</th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+
+          <tbody>
+            {places.map((place) => (
+              <tr key={place.id}>
+                <td>{place.id}</td>
+                <td>{place.name}</td>
+                <td>{place.description}</td>
+                <td>{place.location || "N/A"}</td>
+                <td>{place.image_url || "N/A"}</td>
+                <td>
+                  {place.created_at ? new Date(place.created_at).toLocaleDateString() : "N/A"}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </main>
   );
 }
