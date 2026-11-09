@@ -5,12 +5,7 @@ import {
   fetchPlace,
   fetchPlaceById,
 } from "@/repositories/place.repository";
-import {
-  validatePlaceFields,
-  validateId,
-  validatePlaceNotEmpty,
-} from "@/validators/place.validator";
-
+import { validatePlaceFields, validateId } from "@/validators/place.validator";
 export async function updatePlaceService(id, body) {
   const isValid = validatePlaceFields(body);
   if (!isValid) {
